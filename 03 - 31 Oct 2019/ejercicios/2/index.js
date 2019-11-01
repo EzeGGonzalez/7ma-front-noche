@@ -15,6 +15,14 @@ for (let i = 0; i < figuras.length; i++) {
     <li>${figuras[i].tipo}</li>
   `;
 }
+/// OTRA OPCIÓN PARA HACER LO MISMO (más declarativo)
+// const crearFiguraHTML = (f) => {
+//   return `<li>${f.tipo}</li>`;
+// }
+// const agregarFiguraHTML = (f) => {
+//   document.getElementById('figuras').innerHTML += f;
+// }
+// figuras.map(crearFiguraHTML).forEach(agregarFiguraHTML)
 
 function calcularAreaTotal(figuras) {
   return figuras.reduce((sum, figura) => {
