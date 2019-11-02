@@ -10,36 +10,38 @@ const figuras = [{
   tipo: 'cuadrado'
 }];
 
-for (let i = 0; i < figuras.length; i++) {
-  document.getElementById('figuras').innerHTML += `
-    <li>${figuras[i].tipo}</li>
-  `;
+const calcularArea = (figura) => {
+  let area = 0
+  if (figura.tipo === 'cuadrado') {
+    area = figura.ancho * figura.ancho;
+  }
+  if (figura.tipo === 'rectangulo') {
+    area = figura.alto * figura.ancho;
+  }
+  if (figura.tipo === 'circulo') {
+    area = figura.radio * figura.radio * Math.PI;
+  }
+  return area;
 }
-/// OTRA OPCIÓN PARA HACER LO MISMO (más declarativo)
-// const crearFiguraHTML = (f) => {
-//   return `<li>${f.tipo}</li>`;
-// }
-// const agregarFiguraHTML = (f) => {
-//   document.getElementById('figuras').innerHTML += f;
-// }
-// figuras.map(crearFiguraHTML).forEach(agregarFiguraHTML)
 
 function calcularAreaTotal(figuras) {
-  return figuras.reduce((sum, figura) => {
-    // Calculate the area of this figura
-    let area = 0
-    if (figura.tipo === 'cuadrado') {
-      area = figura.ancho * figura.ancho;
-    }
-    if (figura.tipo === 'rectangulo') {
-      area = figura.alto * figura.ancho;
-    }
-    if (figura.tipo === 'circulo') {
-      area = figura.radio * figura.radio * Math.PI;
-    }
-    // Add it to the sum
-    return sum + area;
-  }, 0)
+  let areaTotal = 0;
+
+  figuras.forEach(function (figura) {
+    areaTotal += calcularArea(figura);
+  })
+
+  return areaTotal;
 }
+
+const crearFiguraHTML = (f) => {
+  return `<li>${f.tipo}</li>`;
+}
+const agregarFiguraHTML = (f) => {
+  document.getElementById('figuras').innerHTML += f;
+}
+// esto es un array
+const figurasHTML = figuras.map(crearFiguraHTML)
+figurasHTML.forEach(agregarFiguraHTML)
 
 document.querySelector('h3 .area').innerHTML = calcularAreaTotal(figuras);
