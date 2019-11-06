@@ -52,19 +52,52 @@ function crearVentaHTML (venta) {
       <div>${ venta.sucursal }</div>
       <div>${ venta.nombreVendedora }</div>
       <div>${ venta.componentes }</div>
+      <div>${ precioMaquina(venta.componentes) }</div>
     </li>
   `;
   return ventaHTML;
 }
-
-const ventasHTML = local.ventas.map(crearVentaHTML);
-
-const ul = document.getElementById('ventas');
-
-ul.innerHTML = ventasHTML.join('');
 
 /* <li class="venta">
   <div class="fecha">4/2/2019</div>
   <div>	Grace	</div>
   <div>Centro	Monitor GPRS 3000 - Motherboard ASUS 1500	320</div>
 </li> */
+
+// function precioMaquina (componentes) {
+
+// }
+
+function obtenerPrecioDelComponente (nombreComponente) {
+  // busco el componente X
+  // for (let i = 0; i < local.precios.length; i++) {
+  //   if (local.precios[i].componente === nombreComponente) {
+  //     return local.precios[i].precio;
+  //   }
+  // }
+  const componente = local.precios.find(function (p) {
+    return p.componente === nombreComponente;
+  })
+  return componente.precio;
+}
+
+function precioMaquina (componentes) {
+  let total = 0;
+
+  // solución imperativa
+  // for (let j = 0; j < componentes.length; j++) {
+  //   total += obtenerPrecioDelComponente( componentes[j] );
+  // }
+
+  // solución declarativa
+  componentes.forEach(c => total += obtenerPrecioDelComponente( c ));
+
+  return total;
+}
+
+
+const ventasHTML = local.ventas.map(crearVentaHTML);
+
+const ul = document.getElementById('ventas');
+
+ul.innerHTML = ventasHTML.join('');
