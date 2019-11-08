@@ -25,28 +25,9 @@ var local = {
   sucursales: ['Centro', 'Caballito']
 };
 
-// itero por todas las ventas
-// for (let i = 0; i < local.ventas.length; i++) {
-//   const venta = local.ventas[i];
-
-//   // innerHTML
-//   const ventaHTML = `
-//     <li class="venta">
-//       <div class="fecha">${venta.fecha.getDate()}/${venta.fecha.getMonth() + 1}/${venta.fecha.getFullYear()}</div>
-//       <div>${ venta.sucursal }</div>
-//       <div>${ venta.nombreVendedora }</div>
-//       <div>${ venta.componentes }</div>
-//     </li>
-//   `;
-
-//   const ul = document.getElementById('ventas');
-
-//   ul.innerHTML += ventaHTML;
-// }
-
 // función que recibe un objeto que representa una venta, y retorna un string con el HTML
-function crearVentaHTML (venta) {
-  const ventaHTML = `
+const crearVentaHTML = (venta) => {
+  return `
     <li class="venta">
       <div class="fecha">${venta.fecha.getDate()}/${venta.fecha.getMonth() + 1}/${venta.fecha.getFullYear()}</div>
       <div>${ venta.sucursal }</div>
@@ -55,49 +36,23 @@ function crearVentaHTML (venta) {
       <div>${ precioMaquina(venta.componentes) }</div>
     </li>
   `;
-  return ventaHTML;
 }
 
-/* <li class="venta">
-  <div class="fecha">4/2/2019</div>
-  <div>	Grace	</div>
-  <div>Centro	Monitor GPRS 3000 - Motherboard ASUS 1500	320</div>
-</li> */
-
-// function precioMaquina (componentes) {
-
-// }
-
-function obtenerPrecioDelComponente (nombreComponente) {
-  // busco el componente X
-  // for (let i = 0; i < local.precios.length; i++) {
-  //   if (local.precios[i].componente === nombreComponente) {
-  //     return local.precios[i].precio;
-  //   }
-  // }
-  const componente = local.precios.find(function (p) {
-    return p.componente === nombreComponente;
-  })
-  return componente.precio;
+const obtenerPrecioDelComponente = (nombreComponente) => {
+  return local.precios.find(p => p.componente === nombreComponente).precio;
 }
 
-function precioMaquina (componentes) {
-  let total = 0;
-
-  // solución imperativa
-  // for (let j = 0; j < componentes.length; j++) {
-  //   total += obtenerPrecioDelComponente( componentes[j] );
-  // }
-
-  // solución declarativa
-  componentes.forEach(c => total += obtenerPrecioDelComponente( c ));
-
-  return total;
+const precioMaquina = (componentes) => {
+  return componentes.reduce((total, c) => total + obtenerPrecioDelComponente(c), 0);
 }
 
+const cantidadVentasComponente = (componente) => {
+  return local.ventas
+    .map(v => v.componentes)
+    .flat()
+    .reduce((total, c) => c === componente ? ++total : total, 0);
+}
 
 const ventasHTML = local.ventas.map(crearVentaHTML);
-
 const ul = document.getElementById('ventas');
-
 ul.innerHTML = ventasHTML.join('');
