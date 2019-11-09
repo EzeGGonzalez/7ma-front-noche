@@ -1,4 +1,4 @@
-var products = [{
+const products = [{
     id: 1,
     name: "Dolor est.",
     description: "Amet stet sanctus amet eos eirmod amet. Et amet ipsum.",
@@ -40,4 +40,31 @@ var products = [{
     imageUrl: "https://picsum.photos/200/300?random=6",
     price: 499
   }
-]
+];
+
+// solucion 1
+const mostrarProductos = () => {
+  const productsList = document.querySelector('.products');
+
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    const productHTML = `
+      <div class="product">
+        <div class="product-image">
+          <img src="${product.imageUrl}" alt="${product.name}">
+        </div>
+        <div class="product-name"><span>Product:</span> ${product.name}</div>
+        <div class="product-description"><span>Description:</span> ${product.description}</div>
+        <div class="product-price"><span>Price:</span> $${product.price}</div>
+        <div class="product-add-to-cart">
+          <a href="#0" class="button see-more">More Details</a>
+          <a href="#0" class="button add-to-cart" data-id=${product.id}>Add to Cart</a>
+        </div>
+      </div>
+    `;
+
+    productsList.innerHTML += productHTML;
+  }
+}
+
+mostrarProductos();
