@@ -42,6 +42,42 @@ const products = [{
   }
 ];
 
+// agregar el id de cada elemento a una variable global array
+const productsCart = [];
+
+function addToCart (id) {
+
+  // buscar los datos del producto sobre el que hicimos click
+  let productoAAgregar;
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    if (product.id === id) { // encontre el producto que tengo que agregar
+      productoAAgregar = product;
+    }
+  }
+
+  productsCart.push(productoAAgregar.id);
+
+  const cantidadVendidos = productsCart.reduce((total, p) => {
+    return p === productoAAgregar.id ? ++total : total
+  }, 0)
+
+  // agrego el nombre y precio del producto al <ul>
+  if (cantidadVendidos === 1) {
+    const cartHTML = `<li id="product-${productoAAgregar.id}">${productoAAgregar.name} - $${productoAAgregar.price} - Q: ${cantidadVendidos}</li>`;
+    document.querySelector('.shopping-cart-list').innerHTML += cartHTML;
+  } else {
+    document.getElementById(`product-${productoAAgregar.id}`).innerHTML = `${productoAAgregar.name} - $${productoAAgregar.price * cantidadVendidos} - Q: ${cantidadVendidos}`;
+  }
+}
+
+
+
+
+
+
+
+
 // solucion 1
 const mostrarProductos = () => {
   const productsList = document.querySelector('.products');
@@ -58,7 +94,7 @@ const mostrarProductos = () => {
         <div class="product-price"><span>Price:</span> $${product.price}</div>
         <div class="product-add-to-cart">
           <a href="#0" class="button see-more">More Details</a>
-          <a href="#0" class="button add-to-cart" data-id=${product.id}>Add to Cart</a>
+          <a href="#0" class="button add-to-cart" onclick="addToCart(${product.id})">Add to Cart</a>
         </div>
       </div>
     `;
