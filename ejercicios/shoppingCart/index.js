@@ -43,10 +43,11 @@ const products = [{
 ];
 
 // agregar el id de cada elemento a una variable global array
-const productsCart = [];
+let productsCart = [];
+// let cantidadDeProductos = 0;
+let totalVentas = 0;
 
 function addToCart (id) {
-
   // buscar los datos del producto sobre el que hicimos click
   let productoAAgregar;
   for (let i = 0; i < products.length; i++) {
@@ -57,6 +58,8 @@ function addToCart (id) {
   }
 
   productsCart.push(productoAAgregar.id);
+  // cantidadDeProductos++;
+  totalVentas += productoAAgregar.price;
 
   const cantidadVendidos = productsCart.reduce((total, p) => {
     return p === productoAAgregar.id ? ++total : total
@@ -64,14 +67,60 @@ function addToCart (id) {
 
   // agrego el nombre y precio del producto al <ul>
   if (cantidadVendidos === 1) {
-    const cartHTML = `<li id="product-${productoAAgregar.id}">${productoAAgregar.name} - $${productoAAgregar.price} - Q: ${cantidadVendidos}</li>`;
+    const cartHTML = `<li id="product-${productoAAgregar.id}">${productoAAgregar.name} - $${productoAAgregar.price} - Q: ${cantidadVendidos} <button onclick="removeProduct(${productoAAgregar.id})">X</button></li>`;
     document.querySelector('.shopping-cart-list').innerHTML += cartHTML;
   } else {
-    document.getElementById(`product-${productoAAgregar.id}`).innerHTML = `${productoAAgregar.name} - $${productoAAgregar.price * cantidadVendidos} - Q: ${cantidadVendidos}`;
+    document.getElementById(`product-${productoAAgregar.id}`).innerHTML = `${productoAAgregar.name} - $${productoAAgregar.price * cantidadVendidos} - Q: ${cantidadVendidos} <button onclick="removeProduct(${productoAAgregar.id})">X</button>`;
   }
+
+  document
+    .querySelector('.product-quantity')
+    .innerText = productsCart.length;
+  document.querySelector('.total-price').innerText = totalVentas;
 }
 
+const removeProduct = (id) => {
+  document.querySelector(`#product-${id}`).remove();
 
+  let productoAEliminar;
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    if (product.id === id) { // encontre el producto que tengo que agregar
+      productoAEliminar = product;
+    }
+  }
+
+  // .splice
+  for (let i = 0; i < productsCart.length; i++) {
+    if (productsCart[i] === id) {
+      totalVentas -= productoAEliminar.price;
+      productsCart.splice(i, 1);
+      i--;
+    }
+  }
+  document
+    .querySelector('.product-quantity')
+    .innerText = productsCart.length;
+  document.querySelector('.total-price').innerText = totalVentas;
+  // for (let i = productsCart.length; i>=0 ; i--) {
+  //   if (productsCart[i] === id) {
+  //     productsCart.splice(i, 1);
+  //   }
+  // }
+}
+
+const emptyCart = () => {
+  document.querySelector('.shopping-cart-list').innerText = '';
+  productsCart = [];
+  totalVentas = 0;
+
+  document
+    .querySelector('.product-quantity')
+    .innerText = productsCart.length;
+  document.querySelector('.total-price').innerText = totalVentas;
+}
+
+document.querySelector('.empty-cart-btn').onclick = emptyCart;
 
 
 

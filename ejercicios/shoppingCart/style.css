@@ -129,12 +129,6 @@ a {
   border-radius: 5px;
 }
 
-.empty-cart-btn,
-.cart-checkout {
-  display: none;
-
-}
-
 .empty-cart-btn {
   margin-bottom: 5px;
 }
