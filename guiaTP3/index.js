@@ -48,10 +48,93 @@ const precioMaquina = (componentes) => {
 
 const cantidadVentasComponente = (componente) => {
   return local.ventas
-    .map(v => v.componentes)
-    .flat()
+    .reduce((acc, v) => acc.concat(v.componentes), [])
     .reduce((total, c) => c === componente ? ++total : total, 0);
 }
+
+
+
+// separar ventas por mes
+// separar ventas por vendedora
+// sumar las ventas de cada vendedora
+
+// 1) relevo de todas las vendedoras (suma del importe de ventas)
+//   - leer la lista de las vendedoras y ver cual es la que tiene mas ventas
+// 2) primero buscar las ventas del mes, y despues sumar/separar por vendedoras
+//   - me quedo con las ventas del mes y anio
+//   - leer la lista de vendedoras
+//   - usar una funcion que me diga total de venta por mes/anio y vendedora
+
+const vendedoraDelMes = (mes, anio) => {
+  let maxImporte = 0;
+  let maxNombreVendedora = '';
+  // recorrer listado de vendedoras
+  for (let i = 0; i < local.vendedoras.length; i++) {
+    const vendedora = local.vendedoras[i];
+    let totalVendido = 0;
+    // ver cuanto vendió cada una
+    // filtro las ventas por vendedora
+    const ventasFiltradas = local.ventas.filter(venta => {
+      return venta.nombreVendedora === vendedora
+        && venta.fecha.getFullYear() === anio
+        && venta.fecha.getMonth() + 1 === mes
+    })
+    for (let j = 0; j < ventasFiltradas.length; j++) {
+      const venta = ventasFiltradas[j];
+      const importe = precioMaquina(venta.componentes);
+      totalVendido += importe;
+    }
+    // totalVendido va tener todo lo que vendió X vendedora
+    if (totalVendido > maxImporte) {
+      maxImporte = totalVendido;
+      maxNombreVendedora = vendedora;
+    }
+  } // aca termina el for de las vendedoras
+
+  return maxNombreVendedora;
+}
+
+const ventasMes = (mes, anio) => {
+  // forEach local.ventas
+  let total = 0;
+
+  local.ventas.forEach(venta => {
+    // checkear si la venta es del mes y anio que llegan por param
+    if (venta.fecha.getFullYear() === anio && venta.fecha.getMonth() + 1 === mes) {
+      total += precioMaquina(venta.componentes);
+    }
+  });
+
+  // local.ventas
+  //   .filter(venta => venta.fecha.getFullYear() === anio && venta.fecha.getMonth() + 1 === mes)
+  //   .forEach(venta => total += precioMaquina(venta.componentes));
+
+  return total;
+}
+
+console.log( vendedoraDelMes(1, 2019) );
+console.log( ventasMes(1, 2019) ); // 1250
+
+const ventasVendedora = (nombre) => {
+  let total = 0;
+
+  local.ventas.forEach(venta => {
+    if (venta.nombreVendedora === nombre) {
+      total += precioMaquina(venta.componentes);
+    }
+  })
+
+  // local.ventas
+  //   .filter(venta => venta.nombreVendedora === nombre)
+  //   .forEach(venta => total += precioMaquina(venta.componentes))
+
+  // return local.ventas
+  //   .filter(venta => venta.nombreVendedora === nombre)
+  //   .reduce((total, venta) => total + precioMaquina(venta.componentes), 0)
+
+  return total;
+}
+
 
 const ventasHTML = local.ventas.map(crearVentaHTML);
 const ul = document.getElementById('ventas');
