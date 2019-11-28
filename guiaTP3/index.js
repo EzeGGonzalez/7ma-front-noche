@@ -22,7 +22,7 @@ var local = {
     { componente: "RAM Quinston Fury", precio: 230 }
   ],
 
-  sucursales: ['Centro', 'Caballito']
+  sucursales: ['Centro', 'Caballito', 'Almagro']
 };
 
 // función que recibe un objeto que representa una venta, y retorna un string con el HTML
@@ -43,6 +43,19 @@ const obtenerPrecioDelComponente = (nombreComponente) => {
 }
 
 const precioMaquina = (componentes) => {
+  // let total = 0;
+
+  // componentes.forEach((c) => {
+  //   total += obtenerPrecioDelComponente(c)
+  // });
+
+  // return total;
+
+
+  // return componentes.reduce((total, c) => {
+  //   return total + obtenerPrecioDelComponente(c)
+  // }, 0);
+
   return componentes.reduce((total, c) => total + obtenerPrecioDelComponente(c), 0);
 }
 
@@ -74,16 +87,17 @@ const vendedoraDelMes = (mes, anio) => {
     let totalVendido = 0;
     // ver cuanto vendió cada una
     // filtro las ventas por vendedora
-    const ventasFiltradas = local.ventas.filter(venta => {
-      return venta.nombreVendedora === vendedora
-        && venta.fecha.getFullYear() === anio
-        && venta.fecha.getMonth() + 1 === mes
-    })
-    for (let j = 0; j < ventasFiltradas.length; j++) {
-      const venta = ventasFiltradas[j];
-      const importe = precioMaquina(venta.componentes);
-      totalVendido += importe;
-    }
+    local.ventas
+      .filter(venta => {
+        return venta.nombreVendedora === vendedora
+          && venta.fecha.getFullYear() === anio
+          && venta.fecha.getMonth() + 1 === mes
+      })
+      .forEach(venta => {
+        const importe = precioMaquina(venta.componentes);
+        totalVendido += importe;
+      })
+
     // totalVendido va tener todo lo que vendió X vendedora
     if (totalVendido > maxImporte) {
       maxImporte = totalVendido;
@@ -93,6 +107,8 @@ const vendedoraDelMes = (mes, anio) => {
 
   return maxNombreVendedora;
 }
+
+console.log( vendedoraDelMes(1, 2019) ); // "Ada" (vendio por $670, una máquina de $320 y otra de $350)
 
 const ventasMes = (mes, anio) => {
   // forEach local.ventas
@@ -112,8 +128,10 @@ const ventasMes = (mes, anio) => {
   return total;
 }
 
-console.log( vendedoraDelMes(1, 2019) );
-console.log( ventasMes(1, 2019) ); // 1250
+const ventasDelMesYAnio = ventasMes(1, 2019);
+
+
+console.log( ventasDelMesYAnio ); // 1250
 
 const ventasVendedora = (nombre) => {
   let total = 0;
@@ -135,7 +153,70 @@ const ventasVendedora = (nombre) => {
   return total;
 }
 
+const huboVentas = (mes, anio) => {
+  // uso la funcion ventasMes pasandole el mes y anio
+  // si lo que me devuelve es igual a 0, es porque no hubo ventas entonces retorno false
+  // y sino retorno true
+}
+
+const componenteMasVendido = () => {
+  // let elMaximo = '';
+  // let elMontoMaximo = -1;
+
+  for (let i = 0; i < local.precios.length; i++) {
+      const precio = local.precios[i];
+
+  //   if (elMontoMaximo < cantidadVentasComponente(precio.componente) {
+  //     elMontoMaximo = cantidadVentasComponente([NOMBRE COMPONENTE])
+  //     elMaximo = [NOMBRE COMPONENTE]
+  //   }
+  }
+
+  // return elMaximo;
+}
 
 const ventasHTML = local.ventas.map(crearVentaHTML);
 const ul = document.getElementById('ventas');
 ul.innerHTML = ventasHTML.join('');
+
+const abrirModalNuevaVenta = () => {
+  // document.querySelector('#modal-nueva-venta').style.display = 'block';
+  document.querySelector('#modal-nueva-venta').classList.add('active');
+}
+
+document.querySelector('.btn-agregar-venta').onclick = abrirModalNuevaVenta;
+
+const cerrarModal = () => {
+  document.querySelector('#modal-nueva-venta').classList.remove('active');
+}
+
+document.querySelector('.btn-modal-close').onclick = cerrarModal;
+
+const agregarVenta = () => {
+  alert('aca hariamos todo lo necesario para crear la venta!')
+  cerrarModal();
+}
+
+document.querySelector('.btn-modal-agregar').addEventListener('click', agregarVenta);
+// document.querySelector('.btn-modal-agregar').onclick = agregarVenta;
+
+
+// maxSucursal maxSucursalMonto
+// filtras ventas por mes y año
+// iterar por cada sucursal
+    // iterar por las ventas
+          // sumamos las ventas de la sucursal
+    // si maxSucursalMonto < las ventas de la sucursal
+          // maxSucursal = sucursal
+
+
+
+
+
+
+
+
+
+
+
+

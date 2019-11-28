@@ -5,12 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <button class="btn-agregar-venta">agregar nueva venta</button>
 
   <ul id="ventas">
 
   </ul>
+
+  <div class="modal" id="modal-nueva-venta">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
+      <div class="modal-header">
+        Nueva venta
+      </div>
+      <div class="modal-body">
+        <form action="">
+          <input type="text">
+          <input type="text">
+          <input type="text">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-close">Cancel</button>
+        <button class="btn-modal-agregar">Agregar</button>
+      </div>
+    </div>
+  </div>
 
   <script src="index.js"></script>
 </body>

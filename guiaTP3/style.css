@@ -1,0 +1,32 @@
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.modal.active {
+  display: block;
+}
+
+.modal .modal-backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: black;
+  opacity: 0.5;
+}
+
+.modal .modal-container {
+  position: absolute;
+  background: white;
+  left: 0;
+  right: 0;
+  top: 15px;
+  width: 200px;
+  margin: auto;
+}
