@@ -1,11 +1,10 @@
-
-
 function clickCaja (e) {
   const el = document.querySelector('.box');
 
   // 1. Cambiar el texto del elemento a "¡Clickeado!"
   el.innerText = "¡Clickeado!";
 
+  // CALLBACK HELL
   // 2. Hacer que el elemento sea un círculo después de 2 segundos
   setTimeout(() => {
     el.classList.add('circle');
@@ -31,10 +30,6 @@ function clickCaja (e) {
       }, 250);
     }, 500);
   }, 2000);
-
-
-
-
 }
 
 const box = document.querySelector('.box');
