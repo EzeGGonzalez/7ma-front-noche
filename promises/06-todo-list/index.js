@@ -10,6 +10,22 @@ const loadData = () => {
     })
 }
 
+const addToDoHTML = (todo) => {
+  const tareaHTML = `<li id="todo-${todo.id}">${todo.texto} - ${todo.completada ? 'completada' : 'pendiente'} - <button onclick="deleteTodo(${todo.id})">X</button></li>`;
+  document.getElementById('tasks').innerHTML += tareaHTML;
+}
+
+const deleteTodo = id => {
+  // /api/todos/1
+  // /api/todos/2
+  // /api/todos/3
+  axios
+    .delete('https://tp3-server-mlssecjyqf.now.sh/api/todos/' + id)
+    .then(res => {
+      document.getElementById(`todo-${id}`).remove()
+    })
+}
+
 const newTodo = (e) => {
   e.preventDefault();
 
@@ -24,19 +40,6 @@ const newTodo = (e) => {
       const todo = res.data;
       addToDoHTML(todo);
     })
-}
-
-const deleteTodo = id => {
-  axios
-    .delete(`https://tp3-server-mlssecjyqf.now.sh/api/todos/${id}`)
-    .then(res => {
-      document.getElementById(`todo-${id}`).remove();
-    })
-}
-
-const addToDoHTML = (todo) => {
-  const tareaHTML = `<li id="todo-${todo.id}">${todo.texto} - ${todo.completada ? 'completada' : 'pendiente'} - <button onclick="deleteTodo(${todo.id})">X</button></li>`;
-  document.getElementById('tasks').innerHTML += tareaHTML;
 }
 
 document.getElementById('new-todo').onsubmit = newTodo;
