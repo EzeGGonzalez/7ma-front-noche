@@ -1,8 +1,39 @@
 let id = 0;
-const movimientos = [];
+let movimientos = [];
 let saldo = 0;
 let totalIngresos = 0;
 let totalEgresos = 0;
+
+
+// endpoints
+// GET https://billetera-api-bwvhnmcdel.now.sh/api/movimientos
+// POST https://billetera-api-bwvhnmcdel.now.sh/api/movimientos
+// DELETE https://billetera-api-bwvhnmcdel.now.sh/api/movimientos/:id
+
+const loadData = () => {
+  // traer de la api los movimientos persistidos
+  axios
+    .get('https://billetera-api-bwvhnmcdel.now.sh/api/movimientos')
+    .then(res => {
+      movimientos = res.data;
+
+      movimientos.forEach(m => {
+        agregarMovimientoAlDOM(m);
+      });
+    })
+}
+
+const agregarMovimientoAlDOM = (m) => {
+  const movimientoHTML = crearMovimientoHTML(m);
+
+  if (m.tipoMovimiento === 'inc') {
+    document.querySelector('.income__list').innerHTML += movimientoHTML;
+    totalIngresos += m.monto;
+  } else {
+    document.querySelector('.expenses__list').innerHTML += movimientoHTML;
+    totalEgresos += m.monto;
+  }
+}
 
 const crearMovimientoHTML = movimiento => {
   const signo = movimiento.tipoMovimiento === 'inc' ? '+' : '-';
@@ -11,7 +42,7 @@ const crearMovimientoHTML = movimiento => {
       <div class="item__description">${movimiento.descripcion}</div>
       <div class="right clearfix">
         <div class="item__value">${signo} ${movimiento.monto}</div>
-        <div class="item__delete"><button onclick="eliminarMovimiento(${movimiento.id})" class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+        <div class="item__delete"><button onclick="eliminarMovimiento('${movimiento.id}')" class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
         </div>
       </div>
     </div>
@@ -32,15 +63,7 @@ const agregarMovimiento = () => {
 
   movimientos.push(nuevoMovimiento);
 
-  const movimientoHTML = crearMovimientoHTML(nuevoMovimiento);
-
-  if (tipoMovimiento === 'inc') {
-    document.querySelector('.income__list').innerHTML += movimientoHTML;
-    totalIngresos += nuevoMovimiento.monto;
-  } else {
-    document.querySelector('.expenses__list').innerHTML += movimientoHTML;
-    totalEgresos += nuevoMovimiento.monto;
-  }
+  agregarMovimientoAlDOM(nuevoMovimiento);
 
   actualizarSaldos();
 }
@@ -54,22 +77,28 @@ const actualizarSaldos = () => {
 }
 
 const eliminarMovimiento = id => {
-  for (let i = 0; i < movimientos.length; i++) {
-    const movimiento = movimientos[i];
-    if (movimiento.id === id) {
-      if (movimiento.tipoMovimiento === 'inc') {
-        totalIngresos -= movimiento.monto;
-      } else {
-        totalEgresos -= movimiento.monto;
+  axios
+    .delete(`https://billetera-api-bwvhnmcdel.now.sh/api/movimientos/${id}`)
+    .then(res => {
+      for (let i = 0; i < movimientos.length; i++) {
+        const movimiento = movimientos[i];
+        if (movimiento.id === id) {
+          if (movimiento.tipoMovimiento === 'inc') {
+            totalIngresos -= movimiento.monto;
+          } else {
+            totalEgresos -= movimiento.monto;
+          }
+
+          actualizarSaldos();
+
+          document.querySelector(`#${movimiento.tipoMovimiento}-${movimiento.id}`).remove();
+
+          movimientos.splice(i, 1);
+        }
       }
-
-      actualizarSaldos();
-
-      document.querySelector(`#${movimiento.tipoMovimiento}-${movimiento.id}`).remove();
-
-      movimientos.splice(i, 1);
-    }
-  }
+    })
 }
 
 document.querySelector('.add__btn').onclick = agregarMovimiento;
+
+loadData();
