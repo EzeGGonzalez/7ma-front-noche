@@ -66,3 +66,8 @@ const mostrarPersonas = () => {
 }
 
 mostrarPersonas();
+
+
+document.querySelectorAll('.btn-cerrar-modal').forEach(btn => {
+  btn.onclick = cerrarModal;
+})
