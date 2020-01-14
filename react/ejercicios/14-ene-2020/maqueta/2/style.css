@@ -1,0 +1,25 @@
+@import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+
+body {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+.btn {
+  border-radius: 0 !important;
+  cursor: pointer;
+}
+
+.header {
+  height: 100px;
+}
+
+.panel {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 4rem;
+  justify-content: center;
+  margin: 1rem auto;
+  width: 14rem;
+}
