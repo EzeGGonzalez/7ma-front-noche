@@ -1,5 +1,6 @@
 import React from 'react';
 import Bienvenida from './components/Bienvenida';
+import './App.css';
 
 class App extends React.Component {
   constructor (props) {
