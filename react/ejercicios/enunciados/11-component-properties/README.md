@@ -1,4 +1,4 @@
-# `03.3` Component Properties
+# Ejercicio `11` Propiedades de componentes
 
 El componente **BootstrapCard** que hicimos en el ejercicio anterior está [hard coded](https://www.quora.com/What-does-hard-coded-something-mean-in-computer-programming-context) solo para **Dave Grohl**.
 
@@ -42,6 +42,8 @@ const BootstrapCard = (props) => {
 ```
 
 ## ⚙️ Ejercicio
+
+Código base del ejercicio: https://codesandbox.io/s/react-ejercicio-11-0qc7c
 
 Ahora vamos a agregar/usar las propiedades `imageUrl`, `description`, `buttonUrl` y `buttonLabel` dentro del componente/función **BootstrapCard** y también sobre la etiqueta `<BootstrapCard />`. Hay que hacerlo de la misma forma en la que fue incluída la propiedad `title` en ambos lados.
 
